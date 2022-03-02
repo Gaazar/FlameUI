@@ -1,0 +1,30 @@
+Button
+{
+	normal
+	{
+		color:name = RRGGBBAA;
+		gradient:name = [{0,red},{0.2,yellow},{0.6,alicebule},{1,green}}];
+		
+		rect:fill
+		{
+			
+		}
+		rect:outline
+		{
+			bursh=name;
+			
+		}
+	}
+	hover
+	{
+	}
+	press
+	{	
+	}
+	release
+	{
+	}
+	activited
+	{
+	}
+}
