@@ -5,7 +5,7 @@ using namespace FlameUI;
 using namespace D2D1;
 D3DViewPort::D3DViewPort(View* parent) :View(parent), d2dTex(nullptr)
 {
-
+	keyable = true;
 }
 LRESULT D3DViewPort::OnEvent(Message msg, WPARAM wParam, LPARAM lParam)
 {

@@ -1,5 +1,4 @@
 #include "DockProvider.h"
-#include "FlameUI.h"
 #include <iostream>
 using namespace FlameUI;
 using namespace D2D1;
