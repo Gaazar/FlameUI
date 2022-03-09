@@ -23,9 +23,9 @@ namespace FlameUI
 
 		D3DViewPort(View* parent);
 #ifdef _DX12
-		void SetOutput(ID3D12Resource* res);
+		HRESULT SetOutput(ID3D12Resource* res);
 #endif
-		void SetOutput(ID3D11Resource* res);
+		HRESULT SetOutput(ID3D11Resource* res);
 		void* GetD3DResource();
 		void* GetD3DDevice();
 		void* GetDXGIDevice();

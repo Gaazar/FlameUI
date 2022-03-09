@@ -641,24 +641,12 @@ LRESULT cb_close(View* view, Message msg, WPARAM wparam, LPARAM lparam)
 }
 Panel* tpnl;
 
-HRSRC rgif;
-HRSRC rpng;
-
-HGLOBAL ggif;
-HGLOBAL gpng;
-
 HWND thwnd; Frame* tFrame;
 int WinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-
-	rgif = FindResource(0, MAKEINTRESOURCE(IDR_GIF2), L"GIF");
-	ggif = LoadResource(0, rgif);
-
-	rpng = FindResource(0, MAKEINTRESOURCE(IDB_PNG1), L"PNG");
-	gpng = LoadResource(0, rpng);
 
 	Initiate();
 	//Test();
@@ -730,105 +718,112 @@ Menu* tMenu = nullptr;
 RadioButton* trb;
 void cbtest(View* v, Message m, WPARAM w, LPARAM l)
 {
-	//EnterCriticalSection(&gThreadAccess);
-	//auto hm = CreatePopupMenu();
-	//for (int i = 0; i < 1; i++)
-	//{
-	//	AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 0");
-	//	AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 1");
-	//	AppendMenuW(hm, 0, 0, L"MenuItem 2");
-	//	AppendMenuW(hm, 0, 0, L"MenuItem 3");
-	//}
-	//if (!tMenu)
-	//{
-	//	tMenu = new Menu(L"File");
-	//	tMenu->AppendItem(MenuItem::Common(0, 0, L"New", L"Ctrl+N"));
-	//	tMenu->AppendItem(MenuItem::Common(0, 0, L"Open", L""));
+	if (m == FE_RBUTTONDOWN)
+	{
+		//EnterCriticalSection(&gThreadAccess);
+		auto hm = CreatePopupMenu();
+		for (int i = 0; i < 1; i++)
+		{
+			AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 0");
+			AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 1");
+			AppendMenuW(hm, 0, 0, L"MenuItem 2");
+			AppendMenuW(hm, 0, 0, L"MenuItem 3");
+		}
+		if (!tMenu)
+		{
+			tMenu = new Menu(L"File");
+			tMenu->AppendItem(MenuItem::Common(0, 0, L"New", L"Ctrl+N"));
+			tMenu->AppendItem(MenuItem::Common(0, 0, L"Open", L""));
 
-	//	Menu* sub = new Menu(L"Recent");
-	//	sub->AppendItem(MenuItem::Common(0, 0, L"FlameUI.sln", L""));
-	//	sub->AppendItem(MenuItem::Common(0, 0, L"GxEngine.sln", L""));
-	//	sub->AppendItem(MenuItem::Seperator());
-	//	sub->AppendItem(MenuItem::Common(0, 0, L"C:\\Windows\\System\\", L""));
-	//	sub->AppendItem(MenuItem::Common(0, 0, L"D:\\Documents\\Vieoes\\", L""));
-	//	sub->AppendItem(MenuItem::Seperator());
-	//	sub->AppendItem(MenuItem::SubMenu(0, sub));
+			Menu* sub = new Menu(L"Recent");
+			sub->AppendItem(MenuItem::Common(0, 0, L"FlameUI.sln", L""));
+			sub->AppendItem(MenuItem::Common(0, 0, L"GxEngine.sln", L""));
+			sub->AppendItem(MenuItem::Seperator());
+			sub->AppendItem(MenuItem::Common(0, 0, L"C:\\Windows\\System\\", L""));
+			sub->AppendItem(MenuItem::Common(0, 0, L"D:\\Documents\\Vieoes\\", L""));
+			sub->AppendItem(MenuItem::Seperator());
+			sub->AppendItem(MenuItem::SubMenu(0, sub));
 
-	//	tMenu->AppendItem(MenuItem::Seperator());
-	//	tMenu->AppendItem(MenuItem::Common(0, 0, L"Save", L"Ctrl+S",true));
-	//	tMenu->AppendItem(MenuItem::Common(0, 0, L"Save as", L"", true));
+			tMenu->AppendItem(MenuItem::Seperator());
+			tMenu->AppendItem(MenuItem::Common(0, 0, L"Save", L"Ctrl+S", true));
+			tMenu->AppendItem(MenuItem::Common(0, 0, L"Save as", L"", true));
 
-	//	tMenu->AppendItem(MenuItem::SubMenu(0,sub));
-	//	tMenu->AppendItem(MenuItem::Seperator());
-	//	tMenu->AppendItem(MenuItem::Common(0, 0, L"Exit", L""));
-	//}
-	//PopupMenu(tFrame, tMenu, nullptr);
-	//POINT cp;
-	//GetCursorPos(&cp);
-	////int hr = TrackPopupMenu(hm, TPM_RETURNCMD, cp.x, cp.y, 0, thwnd, nullptr);
-	////std::cout << hr;
-	////return;
-	Frame* secFrame = new Frame({ 800,600 }, { 0,0 });
-	//secFrame->close = false;
-	//secFrame->minimal = false;
-	//secFrame->maximal = false;
-	secFrame->titled = false;
-	secFrame->Title(L"Docker");
-	secFrame->Show();
-	auto dp = new DockProvider(secFrame);
-	RunInUIThread([secFrame, dp]() {
-		auto pp = dp->AddTab(L"Animated GIF");
-		Label* ttl = new Label(pp, L"Well-known animation format.");
-		ttl->Position({ 10,10 });
-		//auto shl = new SeperatorHandle(pp);
-		//shl->Position({ 50,0 });
-		//auto shr = new SeperatorHandle(pp);
-		//shr->Position({ 80,0 });
-		//auto sht = new SeperatorHandle(pp, true);
-		//sht->Position({ 0,50 });
-		//auto shb = new SeperatorHandle(pp, true);
-		//shb->Position({ 0,80 });
+			tMenu->AppendItem(MenuItem::SubMenu(0, sub));
+			tMenu->AppendItem(MenuItem::Seperator());
+			tMenu->AppendItem(MenuItem::Common(0, 0, L"Exit", L""));
+		}
+		PopupMenu(tFrame, tMenu, nullptr);
+	}
+	else
+	{
+		//POINT cp;
+		//GetCursorPos(&cp);
+		////int hr = TrackPopupMenu(hm, TPM_RETURNCMD, cp.x, cp.y, 0, thwnd, nullptr);
+		////std::cout << hr;
+		////return;
+		Frame* secFrame = new Frame({ 800,600 }, { 0,0 });
+		//secFrame->close = false;
+		//secFrame->minimal = false;
+		//secFrame->maximal = false;
+		secFrame->titled = false;
+		secFrame->Title(L"Docker");
+		secFrame->Show();
+		auto dp = new DockProvider(secFrame);
+		RunInUIThread([secFrame, dp]() {
+			auto pp = dp->AddTab(L"Animated GIF");
+			Label* ttl = new Label(pp, L"Well-known animation format.");
+			ttl->Position({ 10,10 });
+			//auto shl = new SeperatorHandle(pp);
+			//shl->Position({ 50,0 });
+			//auto shr = new SeperatorHandle(pp);
+			//shr->Position({ 80,0 });
+			//auto sht = new SeperatorHandle(pp, true);
+			//sht->Position({ 0,50 });
+			//auto shb = new SeperatorHandle(pp, true);
+			//shb->Position({ 0,80 });
 
-		Button* btn = new Button(pp);
-		btn->Position({ 10,40 });
-		//btn->Size({ 80,32 });
-		Label* t = new Label(btn, L"Confirm");
-		t->Coord(COORD_CENTER, COORD_CENTER);
-		//shl->BindEdge(EDGE_LEFT, btn);
-		//sht->BindEdge(EDGE_TOP, btn);
-		//shr->BindEdge(EDGE_RIGHT, btn);
-		//shb->BindEdge(EDGE_BOTTOM, btn);
+			Button* btn = new Button(pp);
+			btn->Position({ 10,40 });
+			//btn->Size({ 80,32 });
+			Label* t = new Label(btn, L"Confirm");
+			t->Coord(COORD_CENTER, COORD_CENTER);
+			//shl->BindEdge(EDGE_LEFT, btn);
+			//sht->BindEdge(EDGE_TOP, btn);
+			//shr->BindEdge(EDGE_RIGHT, btn);
+			//shb->BindEdge(EDGE_BOTTOM, btn);
 
-		Image* img = new Image(pp);
-		img->Content(ggif, SizeofResource(0, rgif));
-		//img->Content(L"I:\\Pictures\\azis.gif");
-		//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\azis2.gif");  });
-		//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\11.bmp.gif");  });
+			Image* img = new Image(pp);
+			img->Content(L"D:\\Picture\\fps_2020.11.21 3.gif");
+			//img->Content(L"I:\\Pictures\\azis.gif");
+			//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\azis2.gif");  });
+			//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\11.bmp.gif");  });
 
-		img->Position({ 10,100 });
+			img->Position({ 10,100 });
 
-		pp = dp->AddTab(L"Static Image");
-		ttl = new Label(pp, L"Common non-animated image.");
-		ttl->Position({ 10,0 });
+			pp = dp->AddTab(L"Static Image");
+			ttl = new Label(pp, L"Common non-animated image.");
+			ttl->Position({ 10,0 });
 
-		img = new Image(pp);
-		//img->Content(L"I:\\Pictures\\3.bmp");
-		img->Content(gpng, SizeofResource(0, rpng));
-		//img->Content(L"N:\\Video\\Apex Legends\\Apex Legends 2021.08.22 - 01.51.31.02.DVR.mp4");
-		//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\azis2.gif");  });
-		//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\11.bmp.gif");  });
+			img = new Image(pp);
+			//img->Content(L"I:\\Pictures\\3.bmp");
+			img->Content(L"D:\\Picture\\predss.png");
+			//img->Content(L"N:\\Video\\Apex Legends\\Apex Legends 2021.08.22 - 01.51.31.02.DVR.mp4");
+			//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\azis2.gif");  });
+			//RunInMainThread([img]() {img->Content(L"I:\\Pictures\\11.bmp.gif");  });
 
-		img->Position({ 10,40 });
+			img->Position({ 10,40 });
 
-		pp = dp->AddTab(L"ImGui");
-		ttl = new Label(pp, L"ImGuiCanvas --------\nImGui");
-		ttl->Position({ 10,0 });
-		ImGuiCanvas* ic = new ImGuiCanvas(pp);
-		ic->Position({ 10,40 });
-		ic->Size({ 10,10 });
-		ic->Coord(COORD_FILL, COORD_FILL);
-		trb->Parent(tpnl);
-		});
+			pp = dp->AddTab(L"ImGui");
+			ttl = new Label(pp, L"ImGuiCanvas --------\nImGui");
+			ttl->Position({ 10,0 });
+			ImGuiCanvas* ic = new ImGuiCanvas(pp);
+			ic->Position({ 10,40 });
+			ic->Size({ 10,10 });
+			ic->Coord(COORD_FILL, COORD_FILL);
+			trb->Parent(tpnl);
+			});
+		//secFrame->MainLoop(true);
+	}
 	//secFrame->AddEventListener(0, &cb_close, FE_DESTROY);
 	//secFrame->MainLoop(true);
 	//LeaveCriticalSection(&gThreadAccess);
@@ -856,6 +851,7 @@ void InitInstance(View* pnl)
 	rdbt->SizeMode(SIZE_MODE_CHILDREN, SIZE_MODE_CHILDREN);
 	rdbt->Position({ 450,0 });
 	rdbt->AddEventListener(nullptr, &cbtest, FE_RBUTTONDOWN);
+	rdbt->AddEventListener(nullptr, &cbtest, FE_LBUTTONDOWN);
 	//PostEvent(rdbt, FE_RBUTTONDOWN, 0, 0);
 	trb = rdbt;
 	t = new Label(rdbt, L"RadioBox");

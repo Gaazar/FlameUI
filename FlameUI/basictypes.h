@@ -13,7 +13,6 @@
 using namespace std;
 //#define _SHOWBORDER
 #define _DX12
-
 #ifdef _DX12
 
 #include <d3d11on12.h>

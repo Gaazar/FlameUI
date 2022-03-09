@@ -70,7 +70,7 @@ D2D1_COLOR_F Theme::Color::Theme = ColorF::ColorF(ColorF::DeepSkyBlue);
 //D2D1_COLOR_F Theme::Color::Theme = ColorF::ColorF(ColorF::DeepSkyBlue);
 
 bool Debug::showBorder = false;
-View* Debug::tempView = nullptr;
+View* Debug::tempView = nullptr; 
 //For complex apps
 float Theme::BasicTextSize = 13.0f; //15
 float Theme::LineHeight = 18.f;		//24
@@ -341,6 +341,7 @@ void FlameUI::Initiate()
 	ID3D11Device* d11dev;
 
 #ifdef _DX12
+//#define _DXDEBUG
 #if defined(_DXDEBUG)
 	// Enable the debug layer (requires the Graphics Tools "optional feature").
 	// NOTE: Enabling the debug layer after device creation will invalidate the active device.
@@ -349,7 +350,6 @@ void FlameUI::Initiate()
 		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
 		{
 			debugController->EnableDebugLayer();
-
 			// Enable additional debug layers.
 			dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
 		}

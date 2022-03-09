@@ -18,6 +18,7 @@ namespace FlameUI
 		D2D1_RECT_F place();
 		D2D1_SIZE_F area();
 		vector<EventListener*> listeners;
+		friend class Frame;
 		bool disposed;
 	protected:
 		RootView* root;

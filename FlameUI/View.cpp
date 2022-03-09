@@ -206,6 +206,16 @@ LRESULT View::SendEvent(Message msg, WPARAM wParam, LPARAM lParam)
 		{
 			auto sr = OnEvent(FE_MOUSEMOVE, 0, ((int)mouse.y << 16) | (int)mouse.x);
 			if (sr) return sr;
+			for (auto i = listeners.begin(); i != listeners.end(); ++i)
+			{
+				if ((*i)->event == msg)
+				{
+					if ((*i)->object)
+						(*i)->method((*i)->object, this, msg, wParam, ((int)mouse.y << 16) | (int)mouse.x);
+					else
+						(*i)->function(this, msg, wParam, ((int)mouse.y << 16) | (int)mouse.x);
+				}
+			}
 			return (LRESULT)this;
 
 		}
@@ -253,6 +263,17 @@ LRESULT View::SendEvent(Message msg, WPARAM wParam, LPARAM lParam)
 			unsigned short mx = (short)mouse.x;
 			auto sr = OnEvent(FE_MOUSEMOVE, 0, ((int)my << 16) | (int)mx);
 			if (sr) return sr;
+			for (auto i = listeners.begin(); i != listeners.end(); ++i)
+			{
+				if ((*i)->event == msg)
+				{
+					if ((*i)->object)
+						(*i)->method((*i)->object, this, msg, wParam, ((int)my << 16) | (int)mx);
+					else
+						(*i)->function(this, msg, wParam, ((int)my << 16) | (int)mx);
+				}
+			}
+
 			return (LRESULT)this;
 		}
 		else if (monitor)

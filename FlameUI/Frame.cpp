@@ -471,6 +471,7 @@ LRESULT Frame::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				frame.rootContext->Release();
 				frame.swapChain->Release();
 				frame.rootContext = 0;
+				
 
 				LeaveCriticalSection(&gThreadAccess);
 			}
@@ -666,6 +667,7 @@ Frame::Frame(Frame* parent, SIZE wndSize, POINT wndPosition, DWORD extStyles) :F
 }
 void Frame::Close()
 {
+	disposed = true;
 	PostMessageW(hWnd, WM_CLOSE, 0, 0);
 }
 void Frame::Show()

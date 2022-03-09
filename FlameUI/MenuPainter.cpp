@@ -66,9 +66,9 @@ void MenuPainter::Draw()
 		}
 		idx++;
 	}
-	if (currentSubmenu != current)
+	if (currentSubmenu != current && currentSubmenu != -1)
 	{
-		PostEvent(this, 0xccfe, 0, 0);
+		PostEvent(this, 0xccfe, 0, 1225);
 	}
 	fr->Release();
 	adp->Release();
@@ -80,10 +80,6 @@ LRESULT MenuPainter::OnEvent(Message msg, WPARAM wParam, LPARAM lParam)
 	if (msg == FE_MOUSEMOVE)
 	{
 		MenuFrame* mf = dynamic_cast<MenuFrame*>(root->Parent());
-		if (mf)
-		{
-			mf->ignore = 0;
-		}
 		mpos = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
 		UpdateView();
 	}
@@ -103,13 +99,8 @@ LRESULT MenuPainter::OnEvent(Message msg, WPARAM wParam, LPARAM lParam)
 		if (current >= 0 && menu->items[current].type != MenuItemType_SubMenu && !menu->items[current].disabled)
 		{
 			fLBD = true;
-			parent->SendEvent(WM_KILLFOCUS, -1, 0);
+			menuFrame->SendEvent(WM_KILLFOCUS, -1, 0);
 			fLBD = false;
-			MenuFrame* mf = dynamic_cast<MenuFrame*>(root->Parent());
-			if (mf)
-			{
-				mf->Close();
-			}
 		}
 		if (current >= 0 && current < menu->items.size() && !menu->items[current].disabled)
 		{
@@ -121,42 +112,43 @@ LRESULT MenuPainter::OnEvent(Message msg, WPARAM wParam, LPARAM lParam)
 	}
 	if (msg == 0xccff)
 	{
-		MenuFrame* mf = dynamic_cast<MenuFrame*>(root);
 		POINT pt{ -1,-1 };
-		if (mf)
+		if (menuFrame)
 		{
-			mf->ignore = 1;
-			pt = mf->Position();
+			pt = menuFrame->Position();
 			pt.x += menuSize.width - 1;
 			pt.y += currentSubmenuY;
 		}
-		submenuFrame = PopupMenu((Frame*)root, menu->items[wParam].subMenu, callback, cbThis, pt);
-		if (mf)
-		{
-			mf->ignore = false;
-		}
+
+		menuFrame->ignore++;
+		std::wcout << menuFrame->name << L"++" << std::endl;
+		//menuFrame->currentSubMenu = (MenuFrame*)1;
+		menuFrame->currentSubMenu = PopupMenu((Frame*)root, menu->items[wParam].subMenu, callback, cbThis, pt);
+		menuFrame->currentSubMenu->isSubMenu = true;
+
 	}
 	if (msg == 0xccfe)
 	{
-		if (submenuFrame)
+		//std::cout << "Close Menu: " << lParam << std::endl;
+		if (currentSubmenu != -1)
 		{
-			((MenuFrame*)root)->ignore = 1;
-			submenuFrame->Close();
-			submenuFrame = nullptr;
 			currentSubmenu = -1;
-			((MenuFrame*)root)->ignore = 0;
+			//menuFrame->currentSubMenu->SendEvent(0xccfe, 0, 0);
+			//SetFocus(menuFrame->GetNative());
+			//std::cout << "SetFocusTo: " << menuFrame->GetNative() << std::endl;
+			menuFrame->currentSubMenu->Close();
+			menuFrame->currentSubMenu = nullptr;
 		}
 	}
 	return 0;
 }
 MenuPainter::MenuPainter(View* parent, Menu* m, MenuCallback cb, void* thiz) :View(parent), menu(m), callback(cb)
 {
+	currentSubmenu = -1;
 	cbThis = thiz;
 	MenuFrame* mf = dynamic_cast<MenuFrame*>(root);
-	if (mf)
-	{
-		mf->name = m->name.c_str();
-	}
+	menuFrame = dynamic_cast<MenuFrame*>(parent);
+	menuFrame->name = m->name.c_str();
 	gDWFactory->CreateTextFormat(L"",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,

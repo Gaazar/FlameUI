@@ -18,8 +18,8 @@ namespace FlameUI
 		int current;
 		int currentSubmenu;
 		int currentSubmenuY;
-		MenuFrame* submenuFrame;
 		bool fLBD;
+		MenuFrame* menuFrame;
 	protected:
 		void Draw() override;
 		LRESULT OnEvent(Message msg, WPARAM wParam, LPARAM lParam) override;
