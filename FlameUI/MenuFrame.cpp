@@ -69,7 +69,7 @@ void MenuFrame::OnKillFocus(View* v, Message m, WPARAM w, LPARAM l)
 	if (ignore > 0)
 	{
 		ignore--;
-		std::wcout << name << L"--" << std::endl;
+		//std::wcout << name << L"--" << std::endl;
 
 	}
 

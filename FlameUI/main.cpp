@@ -23,6 +23,7 @@
 #include "MenuFrame.h"
 #include "DockProvider.h"
 #include "SeperatorHandle.h"
+#include "MenuBar.h"
 #include "ImGuiCanvas.h"
 
 #include "resource2.h"
@@ -653,9 +654,61 @@ int WinMain(HINSTANCE hInstance,
 	//return 0;
 	Frame mainFrame({ 1280,720 });
 	//mainFrame.AddEventListener(0, &cb_close, FE_DESTROY);
+	mainFrame.titled = false;
 	mainFrame.Title(L"图书管理系统");
 	tFrame = &mainFrame;
 	thwnd = mainFrame.GetNative();
+
+	MenuBar* mb = new MenuBar(tFrame);
+	mb->Position({ 5,5 });
+	Menu* m = new Menu(L"Title");
+	{
+		Menu* sm = new Menu(L"File");
+		sm->AppendItem(MenuItem::Common(0, nullptr, L"Open", L""));
+		sm->AppendItem(MenuItem::Common(1, nullptr, L"New", L""));
+		Menu* sub = new Menu(L"Recent");
+		sub->AppendItem(MenuItem::Common(0, 0, L"FlameUI.sln", L""));
+		sub->AppendItem(MenuItem::Common(0, 0, L"GxEngine.sln", L""));
+		sub->AppendItem(MenuItem::Seperator());
+		sub->AppendItem(MenuItem::Common(0, 0, L"C:\\Windows\\System\\", L""));
+		sub->AppendItem(MenuItem::Common(0, 0, L"D:\\Documents\\Vieoes\\", L""));
+		sub->AppendItem(MenuItem::Seperator());
+		sm->AppendItem(MenuItem::SubMenu(0, sub));
+		sm->AppendItem(MenuItem::Seperator());
+		sm->AppendItem(MenuItem::Common(3, nullptr, L"Save", L""));
+		sm->AppendItem(MenuItem::Common(4, nullptr, L"Save as", L""));
+		sm->AppendItem(MenuItem::Common(5, nullptr, L"Exit", L""));
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+		sm = new Menu(L"Edit");
+		sm->AppendItem(MenuItem::Common(0, nullptr, L"Undo", L""));
+		sm->AppendItem(MenuItem::Common(1, nullptr, L"Redo", L""));
+		sm->AppendItem(MenuItem::Seperator());
+		sm->AppendItem(MenuItem::Common(3, nullptr, L"Copy", L""));
+		sm->AppendItem(MenuItem::Common(4, nullptr, L"Paste", L""));
+		sm->AppendItem(MenuItem::Common(5, nullptr, L"Cut", L""));
+		sm->AppendItem(MenuItem::Common(5, nullptr, L"Delete", L""));
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+		sm = new Menu(L"Assets");
+		sm->AppendItem(MenuItem::Common(0, nullptr, L"Import", L""));
+		sm->AppendItem(MenuItem::Common(1, nullptr, L"Export", L""));
+		sm->AppendItem(MenuItem::Seperator());
+		sm->AppendItem(MenuItem::Common(3, nullptr, L"Refresh Database", L""));
+		sm->AppendItem(MenuItem::Common(4, nullptr, L"Clean", L""));
+		sm->AppendItem(MenuItem::Common(5, nullptr, L"Find Reference", L""));
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+		sm = new Menu(L"Window");
+		sm->AppendItem(MenuItem::Common(0, nullptr, L"Inspector", L""));
+		sm->AppendItem(MenuItem::Common(1, nullptr, L"Packages", L""));
+		sm->AppendItem(MenuItem::Common(3, nullptr, L"Scene", L""));
+		sm->AppendItem(MenuItem::Common(4, nullptr, L"Game", L""));
+		sm->AppendItem(MenuItem::Common(5, nullptr, L"Animator", L""));
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+		sm = new Menu(L"Tools");
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+		sm = new Menu(L"Tutorial");
+		m->AppendItem(MenuItem::SubMenu(-1, sm));
+	}
+	mb->SetMenu(m);
 
 	SectionBar sb(&mainFrame);
 	sb.AddEventListener(nullptr, &cb_sb_sc, SBE_OPTIONCHANGED);
@@ -721,14 +774,7 @@ void cbtest(View* v, Message m, WPARAM w, LPARAM l)
 	if (m == FE_RBUTTONDOWN)
 	{
 		//EnterCriticalSection(&gThreadAccess);
-		auto hm = CreatePopupMenu();
-		for (int i = 0; i < 1; i++)
-		{
-			AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 0");
-			AppendMenuW(hm, MF_OWNERDRAW, 0, L"MenuItem 1");
-			AppendMenuW(hm, 0, 0, L"MenuItem 2");
-			AppendMenuW(hm, 0, 0, L"MenuItem 3");
-		}
+
 		if (!tMenu)
 		{
 			tMenu = new Menu(L"File");

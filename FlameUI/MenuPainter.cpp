@@ -121,7 +121,7 @@ LRESULT MenuPainter::OnEvent(Message msg, WPARAM wParam, LPARAM lParam)
 		}
 
 		menuFrame->ignore++;
-		std::wcout << menuFrame->name << L"++" << std::endl;
+		//std::wcout << menuFrame->name << L"++" << std::endl;
 		//menuFrame->currentSubMenu = (MenuFrame*)1;
 		menuFrame->currentSubMenu = PopupMenu((Frame*)root, menu->items[wParam].subMenu, callback, cbThis, pt);
 		menuFrame->currentSubMenu->isSubMenu = true;

@@ -144,6 +144,9 @@
     <ClInclude Include="IReflectable.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MenuBar.h">
+      <Filter>头文件\Views</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="View.cpp">
@@ -240,6 +243,9 @@
       <Filter>ImmediateMode</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiCanvas.cpp">
+      <Filter>源文件\Views</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuBar.cpp">
       <Filter>源文件\Views</Filter>
     </ClCompile>
   </ItemGroup>

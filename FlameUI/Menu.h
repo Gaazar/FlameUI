@@ -20,6 +20,12 @@ namespace FlameUI
 		Menu* subMenu = nullptr;
 		bool disabled;
 		bool checked;
+		union
+		{
+			float f;
+			bool b;
+			int i;
+		} data;
 		static MenuItem Common(int id, ID2D1Bitmap* icon, wstring title, wstring decsription, bool disabled = false);
 		static MenuItem Seperator();
 		static MenuItem SubMenu(int id, Menu* menu);
